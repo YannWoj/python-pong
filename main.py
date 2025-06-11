@@ -1,3 +1,5 @@
+# WELCOME TO PONG!
+
 import pygame
 
 pygame.init()
@@ -48,9 +50,9 @@ def draw(window, paddles):
     pygame.display.update()
 
 def handle_paddle_movement(keys, left_paddle, right_paddle):
-    if keys[pygame.K_s] and left_paddle.y - left_paddle.VELOCITY >= 0:
+    if keys[pygame.K_s] and left_paddle.y - left_paddle.VELOCITY >= 0: # If your keyboard is Qwerty, replace [pygame.K_s] by [pygame.K_w] here
         left_paddle.move(up=True)
-    if keys[pygame.K_w] and left_paddle.y + left_paddle.VELOCITY + left_paddle.height <= HEIGHT:
+    if keys[pygame.K_w] and left_paddle.y + left_paddle.VELOCITY + left_paddle.height <= HEIGHT: # If your keyboard is Qwerty, replace [pygame.K_w] by [pygame.K_s] here
         left_paddle.move(up=False)
 
     if keys[pygame.K_UP] and right_paddle.y - right_paddle.VELOCITY >= 0:
