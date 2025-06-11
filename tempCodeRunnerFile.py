@@ -39,7 +39,6 @@ def draw(window, paddles):
     for paddle in paddles:
         paddle.draw(window)
 
-    # Dotted vertical line at the center
     for i in range(10, HEIGHT, HEIGHT//20):
         if i % 2 == 1:
             continue
