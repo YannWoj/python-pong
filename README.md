@@ -6,7 +6,7 @@
 
 ---
 
-## 📸 Calculator Preview
+## 📸 Pong Game Preview
 
 <img src="./assets/preview/pong-preview.jpg" width="auto" height="auto" alt="Calculator Preview">
 
