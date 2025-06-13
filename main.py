@@ -3,6 +3,12 @@
 import pygame
 
 pygame.init()
+
+paddle_sound = pygame.mixer.Sound("assets/sounds/paddle_sound.mp3")
+wall_sound = pygame.mixer.Sound("assets/sounds/wall_sound.mp3")
+victory_sound = pygame.mixer.Sound("assets/sounds/victory_sound.mp3")
+fail_sound = pygame.mixer.Sound("assets/sounds/fail_sound.mp3")
+
 pygame.display.set_caption("Pong")
 
 WIDTH = 700 
@@ -91,17 +97,20 @@ def draw(window, paddles, ball, left_score, right_score):
 def handle_collision(ball, left_paddle, right_paddle):
     if ball.y + ball.radius >= HEIGHT:
         ball.y_vel *= -1
+        wall_sound.play()
     elif ball.y - ball.radius <= 0:
         ball.y_vel *= -1
+        wall_sound.play()
 
     if ball.x_vel < 0:
         if ball.y >= left_paddle.y and ball.y <= left_paddle.y + left_paddle.height:
             if ball.x - ball.radius <= left_paddle.x + left_paddle.width:
                 ball.x_vel *= -1
+                paddle_sound.play()
 
-                middle_y = right_paddle.y + right_paddle.height / 2
+                middle_y = left_paddle.y + left_paddle.height / 2
                 difference_in_y = middle_y - ball.y
-                reduction_factor = (right_paddle.height / 2) / ball.MAX_VEL
+                reduction_factor = (left_paddle.height / 2) / ball.MAX_VEL
                 y_vel = difference_in_y / reduction_factor
                 ball.y_vel = -1 * y_vel
 
@@ -109,6 +118,7 @@ def handle_collision(ball, left_paddle, right_paddle):
         if ball.y >= right_paddle.y and ball.y <= right_paddle.y + right_paddle.height:
             if ball.x + ball.radius >= right_paddle.x:
                 ball.x_vel *= -1
+                paddle_sound.play()
 
                 middle_y = right_paddle.y + right_paddle.height / 2
                 difference_in_y = middle_y - ball.y
@@ -137,38 +147,52 @@ def main():
 
     left_score = 0
     right_score = 0
+
+    has_played_win_sound = False
     
     while run:
         clock.tick(FPS)
+        
         win_text = ""
+
+        if ball.x < 0:
+            right_score+=1
+            fail_sound.play()
+            ball.reset()
+            pygame.time.delay(1000)
+        elif ball.x > WIDTH:
+            left_score+=1
+            fail_sound.play()
+            ball.reset()
+            pygame.time.delay(1000)
+        
         draw(WINDOW, [left_paddle, right_paddle], ball, left_score, right_score)
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 break
+        
         keys = pygame.key.get_pressed()
         handle_paddle_movement(keys, left_paddle, right_paddle)
 
         ball.move()
         handle_collision(ball, left_paddle, right_paddle)
 
-        if ball.x < 0:
-            right_score+=1
-            ball.reset()
-        elif ball.x > WIDTH:
-            left_score+=1
-            ball.reset()
-
         won = False
 
         if left_score >= WINNING_SCORE:
             won = True
-            win_text = " WINNER        Left Player"
+            win_text = "  WINNER       Left Player"
         elif right_score >= WINNING_SCORE:
             won = True
-            win_text = " WINNER        Right Player"
+            win_text = "  WINNER       Right Player"
 
         if won:
+            if not has_played_win_sound:
+                victory_sound.play()
+                has_played_win_sound = True
+                
             text = SCORE_FONT.render(win_text, 1, WHITE)
             WINDOW.blit(text, (WIDTH//2 - text.get_width() //2, HEIGHT//2 - text.get_height()//2))
             pygame.display.update()
@@ -178,6 +202,7 @@ def main():
             right_paddle.reset()
             left_score = 0
             right_score = 0
+            has_played_win_sound = False
 
     pygame.quit()
 

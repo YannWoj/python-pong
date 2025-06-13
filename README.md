@@ -8,7 +8,7 @@
 
 ## 📸 Calculator Preview
 
-<img src="./assets/pong-preview.jpg" width="auto" height="auto" alt="Calculator Preview">
+<img src="./assets/preview/pong-preview.jpg" width="auto" height="auto" alt="Calculator Preview">
 
 ---
 
