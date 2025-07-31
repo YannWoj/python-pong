@@ -8,7 +8,7 @@
 
 ## 📸 Pong Game Preview
 
-<img src="./assets/preview/pong-preview.jpg" width="525" height="auto" alt="Calculator Preview">
+<img src="./assets/preview/pong-preview.jpg" width="525" height="auto" alt="Pong Preview">
 
 ---
 
